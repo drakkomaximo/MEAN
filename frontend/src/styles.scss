@@ -1,0 +1,42 @@
+/* Material Design */
+@use '@angular/material' as mat;
+
+/* You can add global styles to this file, and also import other style files */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  overflow-x: hidden;
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: #f4f6fb;
+}
+
+/* Custom styles */
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mat-mdc-table {
+  width: 100%;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.mat-mdc-header-cell {
+  font-weight: 600;
+  color: #374151;
+}
+
+.mat-mdc-row:hover {
+  background-color: #f9fafb;
+}
+
+.mat-mdc-chip {
+  margin: 0 4px;
+}
+
+.mat-mdc-paginator {
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}

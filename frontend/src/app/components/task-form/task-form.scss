@@ -1,0 +1,79 @@
+html, body {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+.task-form-container {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  padding: 0;
+}
+
+mat-card {
+  width: 100%;
+  max-width: 700px;
+  min-width: 320px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  border-radius: 18px;
+  padding: 40px 32px 32px 32px;
+  background: #fff;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+mat-card-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 32px;
+  display: block;
+  text-align: left;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 32px;
+}
+
+.form-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-select, mat-input, input, .mat-chip-list {
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  mat-card {
+    max-width: 98vw;
+    padding: 24px 8px;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .form-col {
+    gap: 20px;
+  }
+}
