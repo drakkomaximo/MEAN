@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import { TASK_STATUS, TASK_PRIORITY } from '../constants/taskEnums';
 
 // Interface for Task History
 interface ITaskHistory {
@@ -37,7 +38,7 @@ const TaskSchema = new Schema<ITask>({
   status: {
     type: String,
     enum: {
-      values: ['Pending', 'In Progress', 'Completed'],
+      values: TASK_STATUS,
       message: '{VALUE} is not a valid status'
     },
     required: [true, 'Status is required'],
@@ -46,7 +47,7 @@ const TaskSchema = new Schema<ITask>({
   priority: {
     type: String,
     enum: {
-      values: ['Low', 'Medium', 'High'],
+      values: TASK_PRIORITY,
       message: '{VALUE} is not a valid priority'
     },
     default: 'Medium'

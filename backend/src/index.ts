@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import taskRoutes from './routes/taskRoutes';
 import { config } from './config/config';
+import { swaggerSpec, swaggerUi } from './swagger';
 
 // Create Express app
 const app = express();
@@ -16,17 +17,19 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 // Database connection
 mongoose.connect(config.mongodbUri)
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch((error) => {
-    console.error('MongoDB connection error:', error);
-  });
+.then(() => {
+  console.log('Connected to MongoDB');
+})
+.catch((error) => {
+  console.error('MongoDB connection error:', error);
+});
 
 // Routes
 app.use('/api/tasks', taskRoutes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Basic route
 app.get('/', (req, res) => {
