@@ -1,0 +1,28 @@
+### Crear tarea y guardar el ID en una variable
+POST http://localhost:3000/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Tarea desde REST Client v2",
+  "status": "Pending",
+  "priority": "Medium",
+  "dueDate": "2025-07-01T12:00:00.000Z",
+  "tags": ["prueba", "rest"]
+}
+
+### Listar tareas
+GET http://localhost:3000/api/tasks
+
+### Reemplaza <taskId> manualmente para probar estos endpoints
+GET http://localhost:3000/api/tasks/6837de709185f30b1ab2b5f4
+
+### Actualizar tarea (usa la variable guardada)
+PATCH http://localhost:3000/api/tasks/6837de709185f30b1ab2b5f4
+Content-Type: application/json
+
+{
+  "status": "In Progress"
+}
+
+### Eliminar tarea (usa la variable guardada)
+DELETE http://localhost:3000/api/tasks/6837de709185f30b1ab2b5f4
