@@ -1,0 +1,36 @@
+/* Tabla responsiva */
+table.mat-table {
+  min-width: 600px;
+  width: 100%;
+}
+
+@media (max-width: 700px) {
+  table.mat-table {
+    min-width: 0;
+    font-size: 13px;
+  }
+  th.mat-header-cell, td.mat-cell {
+    padding: 4px 8px;
+    word-break: break-word;
+    max-width: 120px;
+    white-space: pre-line;
+  }
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+/* Cards para historial en móvil */
+.history-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  font-size: 15px;
+}
+.history-row {
+  margin-bottom: 6px;
+  word-break: break-word;
+}

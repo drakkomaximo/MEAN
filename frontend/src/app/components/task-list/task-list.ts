@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,6 +13,7 @@ import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { debounceTime } from 'rxjs/operators';
 
 import { Task } from '../../models/task';
 import { TaskService } from '../../services/task';
@@ -24,6 +25,7 @@ import { TaskService } from '../../services/task';
     CommonModule,
     RouterModule,
     FormsModule,
+    ReactiveFormsModule,
     MatTableModule,
     MatButtonModule,
     MatIconModule,
@@ -47,7 +49,7 @@ export class TaskListComponent implements OnInit {
   // Filters
   statusFilter: string = '';
   priorityFilter: string = '';
-  tagsFilter: string = '';
+  tagsFilter = new FormControl('');
   startDateFilter: string = '';
   endDateFilter: string = '';
   statusOptions: string[] = [];
@@ -59,14 +61,25 @@ export class TaskListComponent implements OnInit {
   pageIndex = 0;
   totalItems = 0;
 
+  isMobile = false;
+
   constructor(
     private taskService: TaskService,
     private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
+    this.isMobile = window.innerWidth < 700;
+    window.addEventListener('resize', () => {
+      this.isMobile = window.innerWidth < 700;
+    });
     this.loadFilterOptions();
     this.loadTasks();
+    this.tagsFilter.valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe(() => {
+        this.applyFilters();
+      });
   }
 
   loadFilterOptions(): void {
@@ -78,15 +91,12 @@ export class TaskListComponent implements OnInit {
     this.taskService.getTasks({
       status: this.statusFilter || undefined,
       priority: this.priorityFilter || undefined,
-      tags: this.tagsFilter || undefined,
+      tags: this.tagsFilter.value || undefined,
       startDate: this.startDateFilter || undefined,
       endDate: this.endDateFilter || undefined
     }).subscribe(tasks => {
-      console.log('TAREAS RECIBIDAS:', tasks);
       this.tasks = tasks;
       this.applyPagination();
-      console.log('TAREAS EN this.tasks:', this.tasks);
-      console.log('TAREAS EN this.filteredTasks:', this.filteredTasks);
     });
   }
 
@@ -100,7 +110,6 @@ export class TaskListComponent implements OnInit {
     this.totalItems = validTasks.length;
     const start = this.pageIndex * this.pageSize;
     this.filteredTasks = validTasks.slice(start, start + this.pageSize);
-    console.log('TAREAS FILTRADAS PARA LA TABLA:', this.filteredTasks);
   }
 
   onPageChange(event: any): void {
@@ -115,5 +124,24 @@ export class TaskListComponent implements OnInit {
         this.loadTasks();
       });
     }
+  }
+
+  get hasActiveFilters(): boolean {
+    return !!(
+      this.statusFilter ||
+      this.priorityFilter ||
+      this.tagsFilter.value ||
+      this.startDateFilter ||
+      this.endDateFilter
+    );
+  }
+
+  clearFilters(): void {
+    this.statusFilter = '';
+    this.priorityFilter = '';
+    this.tagsFilter.setValue('');
+    this.startDateFilter = '';
+    this.endDateFilter = '';
+    this.applyFilters();
   }
 }

@@ -22,8 +22,9 @@ import { TaskService } from '../../services/task';
 })
 export class TaskHistoryComponent implements OnInit {
   taskId: string | null = null;
-  history: TaskHistory[] = [];
+  history: any[] = [];
   displayedColumns: string[] = ['timestamp', 'field', 'oldValue', 'newValue'];
+  isMobile = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -32,6 +33,10 @@ export class TaskHistoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isMobile = window.innerWidth < 700;
+    window.addEventListener('resize', () => {
+      this.isMobile = window.innerWidth < 700;
+    });
     this.taskId = this.route.snapshot.paramMap.get('id');
     if (this.taskId) {
       this.loadHistory();

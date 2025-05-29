@@ -7,7 +7,8 @@
     </button>
   </div>
 
-  <div class="overflow-x-auto">
+  <!-- Tabla en escritorio -->
+  <div class="overflow-x-auto" *ngIf="!isMobile">
     <table mat-table [dataSource]="history" class="w-full">
       <!-- Date and time -->
       <ng-container matColumnDef="timestamp">
@@ -20,7 +21,7 @@
         <th mat-header-cell *matHeaderCellDef>Field</th>
         <td mat-cell *matCellDef="let record">
           <span class="font-medium">
-            {{record.changes[0].field}}
+            {{record.field}}
           </span>
         </td>
       </ng-container>
@@ -30,7 +31,7 @@
         <th mat-header-cell *matHeaderCellDef>Old Value</th>
         <td mat-cell *matCellDef="let record">
           <span class="text-gray-600">
-            {{formatValue(record.changes[0].oldValue)}}
+            {{formatValue(record.oldValue)}}
           </span>
         </td>
       </ng-container>
@@ -40,7 +41,7 @@
         <th mat-header-cell *matHeaderCellDef>New Value</th>
         <td mat-cell *matCellDef="let record">
           <span class="text-green-600">
-            {{formatValue(record.changes[0].newValue)}}
+            {{formatValue(record.newValue)}}
           </span>
         </td>
       </ng-container>
@@ -48,6 +49,16 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+  </div>
+
+  <!-- Cards en móvil -->
+  <div *ngIf="isMobile">
+    <div *ngFor="let record of history" class="history-card">
+      <div class="history-row"><b>Date:</b> {{record.timestamp | date:'medium'}}</div>
+      <div class="history-row"><b>Field:</b> {{record.field}}</div>
+      <div class="history-row"><b>Old Value:</b> <span class="text-gray-600">{{formatValue(record.oldValue)}}</span></div>
+      <div class="history-row"><b>New Value:</b> <span class="text-green-600">{{formatValue(record.newValue)}}</span></div>
+    </div>
   </div>
 
   <!-- Message when there's no history -->

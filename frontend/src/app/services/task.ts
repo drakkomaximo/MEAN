@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Task, TaskHistory } from '../models/task';
 import { environment } from '../../environments/environment';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -40,8 +41,10 @@ export class TaskService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  getTaskHistory(id: string): Observable<TaskHistory[]> {
-    return this.http.get<TaskHistory[]>(`${this.apiUrl}/${id}/history`);
+  getTaskHistory(id: string): Observable<any[]> {
+    return this.http.get<{ history: any[] }>(`${this.apiUrl}/${id}/history`).pipe(
+      map(res => res.history)
+    );
   }
 
   getStatusOptions() {

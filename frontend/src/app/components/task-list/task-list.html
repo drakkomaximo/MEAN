@@ -20,7 +20,7 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Tags</mat-label>
-        <input matInput [(ngModel)]="tagsFilter" (ngModelChange)="applyFilters()" placeholder="Comma separated tags...">
+        <input matInput [formControl]="tagsFilter" placeholder="Comma separated tags...">
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -32,6 +32,12 @@
         <mat-label>End Date</mat-label>
         <input matInput [(ngModel)]="endDateFilter" (ngModelChange)="applyFilters()" placeholder="YYYY-MM-DD" type="date">
       </mat-form-field>
+    </div>
+    <div class="filters-actions-fixed">
+      <button mat-stroked-button color="primary" (click)="clearFilters()" [disabled]="!hasActiveFilters">
+        <mat-icon>clear</mat-icon>
+        Clear filters
+      </button>
     </div>
   </mat-card>
 
@@ -45,7 +51,8 @@
 
   <!-- Tasks table or empty state -->
   <ng-container *ngIf="filteredTasks.length > 0; else noTasks">
-    <div class="mat-elevation-z2 table-wrapper">
+    <!-- Tabla en escritorio -->
+    <div class="mat-elevation-z2 table-wrapper" *ngIf="!isMobile">
       <table mat-table [dataSource]="filteredTasks">
         <!-- Title -->
         <ng-container matColumnDef="title">
@@ -84,7 +91,7 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Actions</th>
           <td mat-cell *matCellDef="let task">
-            <button mat-icon-button color="primary" [routerLink]="['/tasks/edit', task._id || task.id]">
+            <button mat-icon-button color="primary" [routerLink]="['/tasks/edit', task.id]">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button color="warn" (click)="deleteTask(task.id!)">
@@ -98,6 +105,27 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
+    </div>
+    <!-- Cards en móvil -->
+    <div *ngIf="isMobile">
+      <div *ngFor="let task of filteredTasks" class="task-card">
+        <div class="task-row"><b>Title:</b> {{task.title}}</div>
+        <div class="task-row"><b>Status:</b> <span class="status-chip" [ngClass]="task.status">{{task.status}}</span></div>
+        <div class="task-row"><b>Priority:</b> <span class="priority-chip" [ngClass]="task.priority">{{task.priority}}</span></div>
+        <div class="task-row"><b>Due Date:</b> {{task.dueDate | date:'shortDate'}}</div>
+        <div class="task-row"><b>Tags:</b> <span *ngFor="let tag of task.tags" class="tag-chip">{{tag}}</span></div>
+        <div class="task-row actions">
+          <button mat-icon-button color="primary" [routerLink]="['/tasks/edit', task.id]">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteTask(task.id!)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" [routerLink]="['/tasks/history', task.id]">
+            <mat-icon>history</mat-icon>
+          </button>
+        </div>
+      </div>
     </div>
     <mat-paginator
       [length]="totalItems"
