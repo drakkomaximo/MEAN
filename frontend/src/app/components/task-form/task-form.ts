@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Observable, startWith, map } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Task } from '../../models/task';
 import { TaskService } from '../../services/task';
@@ -58,7 +59,8 @@ export class TaskFormComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private snackBar: MatSnackBar
   ) {
     this.taskForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
@@ -164,10 +166,12 @@ export class TaskFormComponent implements OnInit {
 
       if (this.isEditMode && this.taskId) {
         this.taskService.updateTask(this.taskId, task).subscribe(() => {
+          this.snackBar.open('Task updated successfully!', 'Close', { duration: 3000 });
           this.router.navigate(['/tasks']);
         });
       } else {
         this.taskService.createTask(task).subscribe(() => {
+          this.snackBar.open('Task created successfully!', 'Close', { duration: 3000 });
           this.router.navigate(['/tasks']);
         });
       }

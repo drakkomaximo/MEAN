@@ -127,3 +127,31 @@
   justify-content: flex-end;
   margin-top: 12px;
 }
+
+// Chips de status
+.status-chip.pending {
+  background: #fff8e1 !important;
+  color: #bfa100 !important;
+}
+.status-chip.in-progress {
+  background: #e3f2fd !important;
+  color: #1976d2 !important;
+}
+.status-chip.completed {
+  background: #e8f5e9 !important;
+  color: #388e3c !important;
+}
+
+// Chips de priority
+.priority-chip.low {
+  background: #e8f5e9 !important;
+  color: #388e3c !important;
+}
+.priority-chip.medium {
+  background: #fffde7 !important;
+  color: #fbc02d !important;
+}
+.priority-chip.high {
+  background: #ffebee !important;
+  color: #d32f2f !important;
+}

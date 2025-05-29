@@ -7,6 +7,7 @@ export interface Task {
   tags: string[];
   createdAt?: Date;
   updatedAt?: Date;
+  history?: any[];
 }
 
 export interface TaskHistory {

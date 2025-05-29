@@ -14,6 +14,7 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { debounceTime } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Task } from '../../models/task';
 import { TaskService } from '../../services/task';
@@ -65,7 +66,8 @@ export class TaskListComponent implements OnInit {
 
   constructor(
     private taskService: TaskService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -118,10 +120,23 @@ export class TaskListComponent implements OnInit {
     this.applyPagination();
   }
 
+  createTaskSuccess(): void {
+    this.snackBar.open('Task created successfully!', 'Close', { duration: 3000 });
+  }
+
+  updateTaskSuccess(): void {
+    this.snackBar.open('Task updated successfully!', 'Close', { duration: 3000 });
+  }
+
+  deleteTaskSuccess(): void {
+    this.snackBar.open('Task deleted successfully!', 'Close', { duration: 3000 });
+  }
+
   deleteTask(id: string): void {
     if (confirm('Are you sure you want to delete this task?')) {
       this.taskService.deleteTask(id).subscribe(() => {
         this.loadTasks();
+        this.deleteTaskSuccess();
       });
     }
   }
