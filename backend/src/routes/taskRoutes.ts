@@ -9,6 +9,7 @@ import {
 } from '../controllers/taskController';
 import { validateRequest } from '../middleware/validationMiddleware';
 import { TASK_STATUS, TASK_PRIORITY } from '../constants/taskEnums';
+import { seedDatabase } from '../services/seedService';
 
 const router = express.Router();
 
@@ -330,5 +331,29 @@ router.delete('/:id', deleteTask);
  *         description: Task not found
  */
 router.get('/:id/history', require('../controllers/taskController').getTaskHistory);
+
+/**
+ * @openapi
+ * /api/tasks/seed:
+ *   post:
+ *     summary: Seed the database with sample tasks
+ *     tags:
+ *       - Tasks
+ *     responses:
+ *       200:
+ *         description: Database seeded successfully
+ *       400:
+ *         description: Database is not empty
+ *       500:
+ *         description: Server error
+ */
+router.post('/seed', async (req, res) => {
+  try {
+    const result = await seedDatabase();
+    res.json(result);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
+  }
+});
 
 export default router; 

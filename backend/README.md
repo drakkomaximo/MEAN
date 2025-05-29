@@ -85,6 +85,24 @@ https://backend-aaamb.onrender.com/api-docs
 - `GET https://backend-aaamb.onrender.com/api/tasks/:id/history` - Get task change history
 - `GET https://backend-aaamb.onrender.com/api/tasks/status/options` - Get allowed status values
 - `GET https://backend-aaamb.onrender.com/api/tasks/priority/options` - Get allowed priority values
+- `POST https://backend-aaamb.onrender.com/api/tasks/seed` - Seed the database with 25 mock tasks (only if the database is empty)
+
+## Seeding the Database with Mock Data
+
+You can populate the database with 25 mock tasks for testing purposes using the seed endpoint:
+
+```
+POST /api/tasks/seed
+```
+- This will only work if the database is empty. If there are existing tasks, the endpoint will return an error.
+- Each mock task will have random status, priority, due date, and tags.
+
+**Example using curl:**
+```bash
+curl -X POST http://localhost:3000/api/tasks/seed
+```
+
+**Note:** This endpoint is intended for development/testing only.
 
 ## Notes
 
