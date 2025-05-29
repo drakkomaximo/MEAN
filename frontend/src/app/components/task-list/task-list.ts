@@ -12,6 +12,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { Task } from '../../models/task';
 import { TaskService } from '../../services/task';
@@ -32,7 +33,8 @@ import { TaskService } from '../../services/task';
     MatPaginatorModule,
     MatSortModule,
     MatDialogModule,
-    MatCardModule
+    MatCardModule,
+    MatFormFieldModule
   ],
   templateUrl: './task-list.html',
   styleUrls: ['./task-list.scss']
@@ -70,7 +72,6 @@ export class TaskListComponent implements OnInit {
   loadFilterOptions(): void {
     this.taskService.getStatusOptions().subscribe(res => this.statusOptions = res.statusOptions);
     this.taskService.getPriorityOptions().subscribe(res => this.priorityOptions = res.priorityOptions);
-    this.taskService.getTagOptions().subscribe(res => this.tagOptions = res.tagOptions);
   }
 
   loadTasks(): void {
@@ -81,8 +82,11 @@ export class TaskListComponent implements OnInit {
       startDate: this.startDateFilter || undefined,
       endDate: this.endDateFilter || undefined
     }).subscribe(tasks => {
+      console.log('TAREAS RECIBIDAS:', tasks);
       this.tasks = tasks;
       this.applyPagination();
+      console.log('TAREAS EN this.tasks:', this.tasks);
+      console.log('TAREAS EN this.filteredTasks:', this.filteredTasks);
     });
   }
 
@@ -92,9 +96,11 @@ export class TaskListComponent implements OnInit {
   }
 
   applyPagination(): void {
-    this.totalItems = this.tasks.length;
+    const validTasks = this.tasks.filter(task => task && task.title);
+    this.totalItems = validTasks.length;
     const start = this.pageIndex * this.pageSize;
-    this.filteredTasks = this.tasks.slice(start, start + this.pageSize);
+    this.filteredTasks = validTasks.slice(start, start + this.pageSize);
+    console.log('TAREAS FILTRADAS PARA LA TABLA:', this.filteredTasks);
   }
 
   onPageChange(event: any): void {
