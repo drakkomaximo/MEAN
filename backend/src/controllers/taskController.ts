@@ -38,7 +38,12 @@ export const getTasks = async (req: Request, res: Response): Promise<void> => {
     }
 
     const tasks = await Task.find(query).sort({ dueDate: 1 });
-    res.json(tasks);
+    // Mapea cada tarea para agregar el campo id
+    const tasksWithId = tasks.map(task => ({
+      ...task.toObject(),
+      id: task._id
+    }));
+    res.json(tasksWithId);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
