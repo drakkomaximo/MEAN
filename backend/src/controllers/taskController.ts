@@ -58,6 +58,20 @@ export const getTaskById = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
+// Get task history by ID
+export const getTaskHistory = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const task = await Task.findById(req.params.id);
+    if (!task) {
+      res.status(404).json({ message: 'Task not found' });
+      return;
+    }
+    res.json({ history: task.history });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Update a task
 export const updateTask = async (req: Request, res: Response): Promise<void> => {
   try {

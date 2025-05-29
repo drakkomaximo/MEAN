@@ -290,4 +290,45 @@ router.patch('/:id', [...taskValidation, validateRequest], updateTask);
  */
 router.delete('/:id', deleteTask);
 
+/**
+ * @openapi
+ * /api/tasks/{id}/history:
+ *   get:
+ *     summary: Get the change history of a task
+ *     tags:
+ *       - Tasks
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Task ID
+ *     responses:
+ *       200:
+ *         description: Task history
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 history:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       field:
+ *                         type: string
+ *                       oldValue:
+ *                         type: string
+ *                       newValue:
+ *                         type: string
+ *                       timestamp:
+ *                         type: string
+ *                         format: date-time
+ *       404:
+ *         description: Task not found
+ */
+router.get('/:id/history', require('../controllers/taskController').getTaskHistory);
+
 export default router; 
