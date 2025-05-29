@@ -1,59 +1,97 @@
-# Frontend
+# Task Manager Frontend (MEAN Stack)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.0.
+## Overview
 
-## Development server
+This is the frontend for the Task Manager application, built with Angular and Angular Material. It provides a modern, responsive UI for managing tasks, including advanced features such as filtering, history tracking, and dynamic tag management.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
+## Features
+
+- View, create, edit, and delete tasks
+- Filter tasks by status, priority, tags, and due date range
+- Responsive design: table view on desktop, card view on mobile
+- Task history: view all changes made to a task
+- Dynamic tag input and autocomplete
+- Pagination and sorting
+- Confirmation dialogs for destructive actions
+
+---
+
+## Folder Structure
+
+```
+frontend/
+  src/
+    app/
+      components/
+        task-list/      # Task list table and filters
+        task-form/      # Task creation/edit form
+        task-history/   # Task change history view
+      services/
+        task.ts         # Task API service
+      models/
+        task.ts         # Task and TaskHistory interfaces
+      ... (app config, routes, etc)
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## Main Components
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- **TaskListComponent** (`components/task-list/`)
+  - Displays all tasks in a table (desktop) or cards (mobile)
+  - Filtering, pagination, and actions (edit, delete, view history)
+- **TaskFormComponent** (`components/task-form/`)
+  - Form for creating and editing tasks
+  - Dynamic tag input, validation, and date picker
+- **TaskHistoryComponent** (`components/task-history/`)
+  - Shows the change history for a selected task
 
-```bash
-ng generate component component-name
-```
+## Services
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **TaskService** (`services/task.ts`)
+  - Handles all API requests to the backend for tasks, options, and history
 
-```bash
-ng generate --help
-```
+## Models
 
-## Building
+- **Task** (`models/task.ts`)
+  - Interface for task objects
+- **TaskHistory** (`models/task.ts`)
+  - Interface for task history records
 
-To build the project run:
+## Utilities
 
-```bash
-ng build
-```
+- **Responsive UI**: Uses Angular Material and custom CSS for adaptive layouts
+- **Debounced Filtering**: Tag filter input uses a 1s debounce to reduce API calls
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## How to Run Locally
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+1. Go to the `frontend` folder:
+   ```bash
+   cd frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   ng serve
+   ```
+4. Open your browser at `http://localhost:4200`
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## Notes
 
-For end-to-end (e2e) testing, run:
+- The frontend expects the backend API to be running (see backend/README.md for details).
+- All UI text and messages are in English.
+- For development/testing, you can use the backend's `/api/tasks/seed` endpoint to populate the database with mock data.
 
-```bash
-ng e2e
-```
+---
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## License
+MIT
